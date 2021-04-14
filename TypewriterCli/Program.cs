@@ -23,10 +23,12 @@ namespace TypewriterCli
             string templatePath = null;
             string sourcePath = null;
             bool generateIndex = false;
+            bool recursive= true;
 
             var p = new OptionSet  {
                 { "t|template=", "full path to template (*.tst) file.", v => templatePath =  v },
                 { "i|index=", "should generrate index.", v => generateIndex =  !string.IsNullOrEmpty(v) && bool.Parse(v) },
+                { "r|recursive=", "generate recursively.", v => recursive =  !string.IsNullOrEmpty(v) && bool.Parse(v) },
                 { "s|source=", "full path to source (*.cs) file.",v => sourcePath =  v },
                 { "h|help",  "show this message and exit", v => showHelp = v != null }
             };
@@ -50,8 +52,7 @@ namespace TypewriterCli
                     return;
                 }
                 
-                var cliArgs = new CliArgs(templatePath,sourcePath, generateIndex);
-                
+                var cliArgs = new CliArgs(templatePath,sourcePath, generateIndex){Recursive = recursive};
                 if (cliArgs.TemplatePath == null)
                     throw new InvalidOperationException("Missing required option -t|template");
 
